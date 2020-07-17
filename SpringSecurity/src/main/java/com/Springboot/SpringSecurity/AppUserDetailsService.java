@@ -8,26 +8,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-
 public class AppUserDetailsService implements UserDetailsService {
+
     @Autowired
     PasswordEncoder passwordEncoder;
+
     @Autowired
     UserDao userDao;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        String encryptedPassword = passwordEncoder.encode("pass");
-
+        String encryptedPassword = passwordEncoder.encode("demo@321");
         System.out.println("Trying to authenticate user ::" + username);
-
-        System.out.println("Encrypted Password ::" + encryptedPassword);
-
+        System.out.println("Encrypted Password ::"+encryptedPassword);
         UserDetails userDetails = userDao.loadUserByUsername(username);
-
         return userDetails;
-
     }
-
 }

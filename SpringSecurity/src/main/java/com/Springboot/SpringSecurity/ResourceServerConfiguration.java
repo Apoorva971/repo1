@@ -15,85 +15,48 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
 @Configuration
-
 @EnableResourceServer
-
 @EnableWebSecurity
-
 @EnableGlobalMethodSecurity(securedEnabled = true)
-
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
-
     @Autowired
-
     AppUserDetailsService userDetailsService;
 
-
     public ResourceServerConfiguration() {
-
         super();
-
     }
 
-
     @Bean
-
     public static BCryptPasswordEncoder bCryptPasswordEncoder() {
-
         return new BCryptPasswordEncoder();
-
     }
-
 
     @Bean
-
     public AuthenticationProvider authenticationProvider() {
-
         final DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-
         authenticationProvider.setUserDetailsService(userDetailsService);
-
         authenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
-
         return authenticationProvider;
-
     }
-
 
     @Autowired
-
     public void configureGlobal(final AuthenticationManagerBuilder authenticationManagerBuilder) {
-
         authenticationManagerBuilder.authenticationProvider(authenticationProvider());
-
     }
-
 
     @Override
-
     public void configure(final HttpSecurity http) throws Exception {
-
         http
-
                 .authorizeRequests()
-
                 .antMatchers("/").anonymous()
-
                 .antMatchers("/admin/home").hasAnyRole("ADMIN")
-
                 .antMatchers("/user/home").hasAnyRole("USER")
-
+                .antMatchers("/doLogout").hasAnyRole("ADMIN","USER")
                 .anyRequest().authenticated()
-
                 .and()
-
                 .sessionManagement()
-
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-
                 .csrf().disable();
-
     }
-
 }

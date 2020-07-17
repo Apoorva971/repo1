@@ -1,10 +1,11 @@
 package com.Springboot.SpringSecurity;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,10 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @SpringBootApplication
 public class SpringSecurityApplication {
-        @Autowired
+
+    @Autowired
     private TokenStore tokenStore;
+
     @GetMapping("/doLogout")
-    public String logout(HttpServletRequest request) {
+    public String logout(HttpServletRequest request){
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null) {
             String tokenValue = authHeader.replace("Bearer", "").trim();
@@ -24,22 +27,24 @@ public class SpringSecurityApplication {
         }
         return "Logged out successfully";
     }
-        @GetMapping("/")
-        public String index() {
-            return "index";
-        }
-        @GetMapping("/admin/home")
-        public String adminHome() {
-            return "Admin home";
-        }
-        @GetMapping("/user/home")
-        public String userHome() {
-            return "User home";
-        }
-        public static void main(String[] args) {
 
-            SpringApplication.run(SpringSecurityApplication.class, args);
-
-        }
-
+    @GetMapping("/")
+    public String index(){
+        return "index";
     }
+
+    @GetMapping("/admin/home")
+    public String adminHome(){
+        return "Admin home";
+    }
+
+    @GetMapping("/user/home")
+    public String userHome(){
+        return "User home";
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringSecurityApplication.class, args);
+    }
+
+}

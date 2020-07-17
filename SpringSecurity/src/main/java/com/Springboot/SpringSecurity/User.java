@@ -1,4 +1,5 @@
 package com.Springboot.SpringSecurity;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
